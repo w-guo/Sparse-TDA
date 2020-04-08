@@ -1,0 +1,9 @@
+[submodule "code/external/dipha"]
+	path = code/external/dipha
+	url = https://github.com/DIPHA/dipha.git
+[submodule "code/external/PersistenceImages"]
+	path = code/external/PersistenceImages
+	url = https://github.com/w-guo/PersistenceImages.git
+[submodule "code/external/iso2mesh"]
+	path = code/external/iso2mesh
+	url = https://github.com/fangq/iso2mesh
