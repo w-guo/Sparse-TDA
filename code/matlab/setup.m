@@ -7,6 +7,8 @@ root = a ;
 
 % These libraries we require for basic usage
 addpath(fullfile(root, 'external/dipha/matlab'                     ));
+addpath(fullfile(root, 'external/libsvm/matlab'                    ));
+addpath(fullfile(root, 'external/PersistenceImages/matlab_code'    ));
 addpath(fullfile(root, 'matlab/utilities'                          ));
 addpath(fullfile(root, 'matlab/utilities/libsvm-ovr-multiclass'    ));
 addpath(fullfile(root, 'matlab/utilities/optimized-sparse-sampling'));
@@ -26,10 +28,6 @@ end
 if (exist(fullfile(root,'external/CLBP'), 'dir') == 7)
     addpath(fullfile(root, 'external/CLBP'));
     fprintf('Found/Loaded: CLBP\n');    
-end
-if (exist(fullfile(root,'external/PersistenceImages'), 'dir') == 7)
-    addpath(fullfile(root, 'external/PersistenceImages'));
-    fprintf('Found/Loaded: PersistenceImages\n');    
 end
 
 fprintf('Setup is ready.\n');
