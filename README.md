@@ -28,3 +28,46 @@ This code implements the Sparse-TDA method proposed in the following publication
 
 ## Setup
 
+```bash
+git clone https://github.com/w-guo/Sparse-TDA.git
+cd Sparse-TDA
+git submodule update --init --recursive   
+```
+
+### Compiling DIPHA
+
+Prerequisites:
+
+```bash
+brew install open-mpi
+```
+
+Once this has finished, change into the ```code/external/dipha``` directory
+and create a ```build``` directory, then use ```cmake``` to
+configure the build process, e.g.,
+
+```bash
+cd code/external/dipha
+mkdir build
+cd build
+cmake ..
+make
+```
+### Compiling LIBSVM
+### Additional 3rd party tools
+
+For the full pipeline to work, we also need 
+
+1. iso2mesh
+2. [(Scale-Invariant) Heat-Kernel Signature](http://vision.mas.ecp.fr/Personnel/iasonas/code/sihks.zip)
+3. [Completed Local Binary Pattern](http://www.comp.polyu.edu.hk/~cslzhang/code/CLBP.rar)
+  
+### Compiling dipha-pss (optional)
+
+```bash
+cd code/dipha-pss
+mkdir build
+cd build
+cmake ..
+make
+```
