@@ -17,13 +17,14 @@ This code implements the Sparse-TDA method proposed in the following publication
 
 ## Overview
 
-- **[Installation](#installation)**
+- **[Setup](#installation)**
   - [Compiling DIPHA](#compiling-dipha)
-  - [Compiling dipha-pss (optional)](#compiling-dipha-pss)
+  - [Compiling LIBSVM](#compiling-libsvm)
   - [Additional 3rd party tools](#additional-3rd-party-tools)
-- **[Applications](#applications)**
+  - [Compiling dipha-pss (optional)](#compiling-dipha-pss)
+- **[Examples](#examples)**
   - [Human posture recognition](#human-posture-recognition)
   - [Image texture detection](#image-texture-detection)
 
-## Installation
+## Setup
 
