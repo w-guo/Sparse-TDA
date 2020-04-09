@@ -7,3 +7,6 @@
 [submodule "code/external/iso2mesh"]
 	path = code/external/iso2mesh
 	url = https://github.com/fangq/iso2mesh
+[submodule "code/external/libsvm"]
+	path = code/external/libsvm
+	url = https://github.com/cjlin1/libsvm.git
