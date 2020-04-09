@@ -3,7 +3,7 @@ clear all; close all; clc
 root = '../../../data/Outex_TC_00000';
 % total number of images
 numClass = 24; rot = 20;
-total = numClass*rot;
+total = numClass * rot;
 label = reshape(repmat(1:numClass, rot, 1), total, 1);
 
 % parameters for CLBP
@@ -53,8 +53,8 @@ for k = 1:rep
     [test, testClass] = ReadOutexTxt(testTxt);
 
     % generate persistence images
-    % [H0_PIs] = make_PIs(Outex_H0, res, sig); % apply linear weight function
-    [H0_PIs] = make_PIs(Outex_H0, res, sig, @arctan, 1); % apply nonlinear weight function
+    % [H0_PIs] = make_PIs(Outex_H0, res, sig); % apply linear weighting function
+    [H0_PIs] = make_PIs(Outex_H0, res, sig, @arctan, 1); % apply nonlinear weighting function
     vec_H0_PIs = vecs_from_PIs(H0_PIs); % vectorize each PI into a column
     mat_H0_PIs = cat(1, vec_H0_PIs{:})'; % stack all PIs into a matrix
     
