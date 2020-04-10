@@ -46,7 +46,7 @@ git submodule update --init --recursive
 
 ### Compiling DIPHA
 
-The persistence diagrams (PDs) are computed using DIPHA. Prerequisites:
+The persistence diagrams (PDs) are computed using DIPHA which requires MPI sup Prerequisites:
 
 ```bash
 brew install open-mpi
