@@ -3,7 +3,7 @@
 This code implements the Sparse-TDA method that integrates QR pivoting-based sparse sampling algorithm into persistence images to transform topological features into image pixels and identify discriminative pixel samples in the presence of noisy and redundant information. 
 
 <p align="center">
-    <img src="https://github.com/w-guo/Sparse-TDA/blob/master/Sparse_TDA_pipeline.png" width="640"> <br />
+    <img src="https://github.com/w-guo/Sparse-TDA/blob/master/Sparse_TDA_pipeline.png" width="800"> <br />
     <em> Pipeline of Sparse-TDA method for multi-way classification</em>
 </p>
 
@@ -24,13 +24,12 @@ Please cite the following paper if you make use of the code.
 
 ## Overview
 
-- **[Setup](#installation)**
+- **[Setup](#setup)**
   - [Compiling DIPHA](#compiling-dipha)
   - [Additional 3rd party tools](#additional-3rd-party-tools)
   - [Compiling dipha-pss (optional)](#compiling-dipha-pss-(optional))
-- **[Examples](#examples)**
-  - [Human posture recognition](#human-posture-recognition)
-  - [Image texture detection](#image-texture-detection)
+- **[Usage](#usage)**
+ 
 
 ## Setup
 
@@ -66,17 +65,17 @@ make
 
 For the full pipeline to work, we also need 
 
-1. [LIBSVM](https://github.com/cjlin1/libsvm)
+1. [libsvm](https://github.com/cjlin1/libsvm)
 2. [PersistenceImages](https://github.com/w-guo/PersistenceImages/tree/322852ac4a6f401955cad7e41b5d31be2a114a5e)
 3. [iso2mesh](https://github.com/fangq/iso2mesh)
 4. [(Scale-Invariant) Heat-Kernel Signature](http://vision.mas.ecp.fr/Personnel/iasonas/code/sihks.zip)
 5. [Completed Local Binary Pattern](http://www.comp.polyu.edu.hk/~cslzhang/code/CLBP.rar)
   
-where LIBSVM, PersistenceImages and iso2mesh should be The script ```setup.m``` expects these software packages to be available under ```code/external``` 
+where libsvm, PersistenceImages and iso2mesh were downloaded during the ```git submodule update``` into ```code/external```. Please follow the libsvm documentation on how to compile the MATLAB interface. Then download the last two packages and put them under ```code/external```. 
 
 ### Compiling dipha-pss (optional)
 
-You will need to compile ```dipha-pss``` in case you want to compute your own persistence diagrams. You can compile ```dipha-pss``` via
+This repository also contains the code for the *persistence scale space* kernel method that is used for comparison in our paper. The core code for computing the kernel is provided by [Roland Kwitt](https://github.com/rkwitt/persistence-learning/tree/master/code/dipha-pss), and we include a copy under ```code```. You can compile ```dipha-pss``` via
 
 ```bash
 cd code/dipha-pss
@@ -85,3 +84,8 @@ cd build
 cmake ..
 make
 ```
+in case you want to replicate the results using the kernel method. 
+
+## Usage
+
+Create a ```data``` folder under this repository.  
