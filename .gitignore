@@ -1,6 +1,5 @@
 .DS_Store
 Icon?
-*.png
 *.m~
 data/*
 code/dipha-pss/build/*
