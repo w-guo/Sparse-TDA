@@ -1,13 +1,14 @@
 # Sparse-TDA
 
-This code implements the Sparse-TDA method proposed in the following publication. 
+This code implements the Sparse-TDA method that integrates QR pivoting-based sparse sampling algorithm into persistence images to transform topological features into image pixels and identify discriminative pixel samples in the presence of noisy and redundant information. 
 
 ![Pipeline](https://github.com/w-guo/Sparse-TDA/blob/master/Sparse_TDA_pipeline.png "Pipeline")
 
 <p align="center">
     <em> Pipeline of Sparse-TDA method for multi-way classification</em>
 </p>
-Please cite our work if you make use of the code.
+
+Please cite the following paper if you make use of the code.
 
 ```
 @article{guo2018sparse,
@@ -35,7 +36,7 @@ Please cite our work if you make use of the code.
 
 ## Setup
 
-The persistence diagrams (PDs) are computed using DIPHA. After you have clone the repository and the submodules via
+First, clone this repository and all the submodules via
 
 ```bash
 git clone https://github.com/w-guo/Sparse-TDA.git
@@ -45,7 +46,7 @@ git submodule update --init --recursive
 
 ### Compiling DIPHA
 
-Prerequisites:
+The persistence diagrams (PDs) are computed using DIPHA. Prerequisites:
 
 ```bash
 brew install open-mpi
