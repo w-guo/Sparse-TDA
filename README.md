@@ -2,9 +2,8 @@
 
 This code implements the Sparse-TDA method that integrates QR pivoting-based sparse sampling algorithm into persistence images to transform topological features into image pixels and identify discriminative pixel samples in the presence of noisy and redundant information. 
 
-![Pipeline](https://github.com/w-guo/Sparse-TDA/blob/master/Sparse_TDA_pipeline.png "Pipeline")
-
 <p align="center">
+    <img src="https://github.com/w-guo/Sparse-TDA/blob/master/Sparse_TDA_pipeline.png" width="640"> <br />
     <em> Pipeline of Sparse-TDA method for multi-way classification</em>
 </p>
 
@@ -27,9 +26,8 @@ Please cite the following paper if you make use of the code.
 
 - **[Setup](#installation)**
   - [Compiling DIPHA](#compiling-dipha)
-  - [Compiling LIBSVM](#compiling-libsvm)
   - [Additional 3rd party tools](#additional-3rd-party-tools)
-  - [Compiling dipha-pss (optional)](#compiling-dipha-pss)
+  - [Compiling dipha-pss (optional)](#compiling-dipha-pss-(optional))
 - **[Examples](#examples)**
   - [Human posture recognition](#human-posture-recognition)
   - [Image texture detection](#image-texture-detection)
@@ -46,7 +44,7 @@ git submodule update --init --recursive
 
 ### Compiling DIPHA
 
-The persistence diagrams (PDs) are computed using DIPHA which requires MPI sup Prerequisites:
+The persistence diagrams (PDs) are computed using DIPHA which requires MPI support. You can install, e.g., OpenMPI. On MacOS, this can be simply done via
 
 ```bash
 brew install open-mpi
@@ -63,16 +61,22 @@ cd build
 cmake ..
 make
 ```
-### Compiling LIBSVM
+
 ### Additional 3rd party tools
 
 For the full pipeline to work, we also need 
 
-1. iso2mesh
-2. [(Scale-Invariant) Heat-Kernel Signature](http://vision.mas.ecp.fr/Personnel/iasonas/code/sihks.zip)
-3. [Completed Local Binary Pattern](http://www.comp.polyu.edu.hk/~cslzhang/code/CLBP.rar)
+1. [LIBSVM](https://github.com/cjlin1/libsvm)
+2. [PersistenceImages](https://github.com/w-guo/PersistenceImages/tree/322852ac4a6f401955cad7e41b5d31be2a114a5e)
+3. [iso2mesh](https://github.com/fangq/iso2mesh)
+4. [(Scale-Invariant) Heat-Kernel Signature](http://vision.mas.ecp.fr/Personnel/iasonas/code/sihks.zip)
+5. [Completed Local Binary Pattern](http://www.comp.polyu.edu.hk/~cslzhang/code/CLBP.rar)
   
+where LIBSVM, PersistenceImages and iso2mesh should be The script ```setup.m``` expects these software packages to be available under ```code/external``` 
+
 ### Compiling dipha-pss (optional)
+
+You will need to compile ```dipha-pss``` in case you want to compute your own persistence diagrams. You can compile ```dipha-pss``` via
 
 ```bash
 cd code/dipha-pss
