@@ -4,6 +4,9 @@ This code implements the Sparse-TDA method proposed in the following publication
 
 ![Pipeline](https://github.com/w-guo/Sparse-TDA/blob/master/Sparse_TDA_pipeline.png "Pipeline")
 
+<p align="center">
+    <em> Pipeline of Sparse-TDA method for multi-way classification</em>
+</p>
 Please cite our work if you make use of the code.
 
 ```
