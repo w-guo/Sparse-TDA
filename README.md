@@ -1,6 +1,10 @@
 # Sparse-TDA
 
-This code implements the Sparse-TDA method proposed in the following publication. Please cite our work if you make use of the code.
+This code implements the Sparse-TDA method proposed in the following publication. 
+
+![Pipeline](https://github.com/w-guo/Sparse-TDA/blob/master/Sparse_TDA_pipeline.png "Pipeline")
+
+Please cite our work if you make use of the code.
 
 ```
 @article{guo2018sparse,
@@ -27,6 +31,8 @@ This code implements the Sparse-TDA method proposed in the following publication
   - [Image texture detection](#image-texture-detection)
 
 ## Setup
+
+The persistence diagrams (PDs) are computed using DIPHA. After you have clone the repository and the submodules via
 
 ```bash
 git clone https://github.com/w-guo/Sparse-TDA.git
