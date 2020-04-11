@@ -3,7 +3,7 @@
 This code implements the Sparse-TDA method that integrates QR pivoting-based sparse sampling algorithm into persistence images to transform topological features into image pixels and identify discriminative pixel samples in the presence of noisy and redundant information. 
 
 <p align="center">
-    <img src="https://github.com/w-guo/Sparse-TDA/blob/master/Sparse_TDA_pipeline.png" width="800"> <br />
+    <img src="https://github.com/w-guo/Sparse-TDA/blob/master/Sparse_TDA_pipeline.png" width="840"> <br />
     <em> Pipeline of Sparse-TDA method for multi-way classification</em>
 </p>
 
@@ -27,7 +27,7 @@ Please cite the following paper if you make use of the code.
 - **[Setup](#setup)**
   - [Compiling DIPHA](#compiling-dipha)
   - [Additional 3rd party tools](#additional-3rd-party-tools)
-  - [Compiling dipha-pss (optional)](#compiling-dipha-pss-(optional))
+  - [Compiling dipha-pss (optional)](#compiling-dipha-pss-optional)
 - **[Usage](#usage)**
  
 
@@ -66,7 +66,7 @@ make
 For the full pipeline to work, we also need 
 
 1. [libsvm](https://github.com/cjlin1/libsvm)
-2. [PersistenceImages](https://github.com/w-guo/PersistenceImages/tree/322852ac4a6f401955cad7e41b5d31be2a114a5e)
+2. [PersistenceImages](https://github.com/w-guo/PersistenceImages/tree/322852ac4a6f401955cad7e41b5d31be2a114a5e) (nonlinear weighting function is added to our fork)
 3. [iso2mesh](https://github.com/fangq/iso2mesh)
 4. [(Scale-Invariant) Heat-Kernel Signature](http://vision.mas.ecp.fr/Personnel/iasonas/code/sihks.zip)
 5. [Completed Local Binary Pattern](http://www.comp.polyu.edu.hk/~cslzhang/code/CLBP.rar)
@@ -75,7 +75,7 @@ where libsvm, PersistenceImages and iso2mesh were downloaded during the ```git s
 
 ### Compiling dipha-pss (optional)
 
-This repository also contains the code for the *persistence scale space* kernel method that is used for comparison in our paper. The core code for computing the kernel is provided by [Roland Kwitt](https://github.com/rkwitt/persistence-learning/tree/master/code/dipha-pss), and we include a copy under ```code```. You can compile ```dipha-pss``` via
+This repository also contains the code for the *persistence scale space* (PSS) kernel method that is used for comparison in our paper. The core code for computing the kernel is provided by [Roland Kwitt](https://github.com/rkwitt/persistence-learning/tree/master/code/dipha-pss), and we include a copy under ```code```. You can compile ```dipha-pss``` via
 
 ```bash
 cd code/dipha-pss
@@ -84,8 +84,12 @@ cd build
 cmake ..
 make
 ```
-in case you want to replicate the results using the kernel method. 
+if you want to replicate the results using the PSS kernel method. 
 
 ## Usage
 
-Create a ```data``` folder under this repository.  
+Create a ```data``` folder under this repository. The datasets used in our paper can be found at  
+- [Download](http://www.cs.cf.ac.uk/shaperetrieval/download.php) SHREC14
+- [Download](http://www.outex.oulu.fi/db/classification/tmp/Outex_TC_00000.tar.gz) Outex_TC_00000
+
+Next, unpack the downloaded datasets to ```/data```. Generate 
