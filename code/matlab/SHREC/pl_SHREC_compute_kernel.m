@@ -1,46 +1,6 @@
 function K = pl_SHREC_compute_kernel(X, HKStime, sigma, options)
-%    
-%   X struct with the following fields:
-%
-%       .config
-%       .data
-%
-%       .config - Struct with fields
-%
-%           .alpha          - Scalar
-%           .T1             - Array of HKS times
-%           .target_scaling - Scaling of the mesh
-%
-%       .data - N x 1 cell array where each entry is a struct with the
-%               following fields:
-%
-%           .V     - 3 x M matrix of vertex coordinates
-%           .X     - M x 1 array of x-coordinates for each of the M vertices
-%           .Y     - M x 1 array of y-coordinates for each of the M vertices 
-%           .Z     - M x 1 array of z-coordinates for each of the M vertices
-%           .TRIV  - K x 3 matrix of vertex indices of each mesh triangle 
-%           .f_hks - M x len(T1) matrix of HKS times for each vertex
-%      
-%   Typically, MAT_FILE is the file that was saved when pre-processing the 
-%   segmentations of the OASIS data. This is the same input file that is
-%   used for PL_EXPERIMENT_OASIS_RUN_DIPHA
-%
-%   WHAT is a string which identifies the field to be loaded from the
-%   MAT_FILE. LABEL is the prefix that is used for all output files.
-%
-%   OPTIONS is a struct that is used to configure the MMD test. It needs to
-%   have the following fields:
-%
-%       .dim                - Consider .dim homology, e.g., 1
-%       .scales             - PSS kernel scales 10^-s, e.g., [1 2 3]
-%       .trials             - Trials for bootstrapping, e.g., 10000
-%       .alpha              - Significance level, e.g., 0.05
-%       .collect_list_files - 0/1 
-%       .compute_kernel     - 0/1
-%       .run_mmd            - 0/1
-%       .src_dir            - Source directory where .diagram files reside
-%       .dst_dir            - Destination directory
-%
+%  Modified from https://github.com/rkwitt/persistence-learning/blob/master/code/matlab/experiments/pl_experiment_OASIS_run_mmd.m        
+
 %--------------------------------------------------------------------------
 %                                                                 Configure
 %--------------------------------------------------------------------------
@@ -110,7 +70,3 @@ system(exec);
 
 tmp = load(kernel_file);
 K = pl_normalize_kernel(tmp);
-
-            
-
-

@@ -1,5 +1,5 @@
 function result = mesh2hks(base_dir, subjects, target_scaling, varargin)
-% MESH2HKS computes heat-kernel signatures (HKS) for 3D meshes of 
+% mesh2hks computes heat-kernel signatures (HKS) for 3D meshes of 
 % available in OBJ format.
 %
 % Author(s): Roland Kwitt, 2015
@@ -45,7 +45,7 @@ function result = mesh2hks(base_dir, subjects, target_scaling, varargin)
         V = vertices_fixed;
         V = V - repmat(mean(V),size(V,1),1);
         V = V/norm(V);
-        V = target_scaling*V;
+        V = target_scaling*V; % scale the mesh to avoid numerical instabilities
 
         % Save (scaled) mesh data
         subject_data{subject_id}.V = V';
