@@ -75,7 +75,7 @@ where libsvm, PersistenceImages and iso2mesh were downloaded during the ```git s
 
 ### Compiling dipha-pss (optional)
 
-This repository also contains the code for the *persistence scale space* (PSS) kernel method that is used for comparison in our paper. The core code for computing the kernel is provided by [Roland Kwitt](https://github.com/rkwitt/persistence-learning/tree/master/code/dipha-pss), and we include a copy under ```code```. You can compile ```dipha-pss``` via
+This repository also contains the code for the *persistence scale space* (PSS) kernel method that is used for comparison in our paper. The core code for computing the kernel is provided by [Roland Kwitt](https://github.com/rkwitt/persistence-learning/tree/master/code/dipha-pss), and we include a copy under ```code```. In case you want to replicate the results using the PSS kernel method, you also need to compile ```dipha-pss``` via
 
 ```bash
 cd code/dipha-pss
@@ -84,12 +84,23 @@ cd build
 cmake ..
 make
 ```
-if you want to replicate the results using the PSS kernel method. 
+ 
 
 ## Usage
 
-Create a ```data``` folder under this repository. The datasets used in our paper can be found at  
+Create a ```data``` folder under this repository. The data sets used in our paper can be found at  
 - [Download](http://www.cs.cf.ac.uk/shaperetrieval/download.php) SHREC14
 - [Download](http://www.outex.oulu.fi/db/classification/tmp/Outex_TC_00000.tar.gz) Outex_TC_00000
 
-Next, unpack the downloaded datasets to ```/data```. Generate 
+Unpack the downloaded datasets to ```/data```. The essential results in our paper can be reproduced by the main scripts in the ```SHREC``` and ```Outex``` folders
+- ```run_*_kernel.m```
+- ```run_*_sparse.m```
+- ```run_*_sparse_multiple_samples.m```
+  
+For example, if you want to generate the results from the Outex data set using the Spase-TDA method in Table 1 & 2, just run
+```matlab
+cd code/matlab
+setup % load required packages
+cd Outex
+run_Outex_sparse
+```
