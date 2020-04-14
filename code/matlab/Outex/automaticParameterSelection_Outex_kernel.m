@@ -1,30 +1,46 @@
-function [bestc, bestsig, bestcv, kernel] = Outex_automaticParameterSelection(X, ...
-                trainClass, train, bestLog2c, bestLog2sig, Ncv, options)
+function [bestc, bestsig, bestcv, kernel] = automaticParameterSelection_Outex_kernel(X, ...
+                trainClass, train, Ncv, option, opt)
 % This function assist you to obtain the cost parameter C  and kernel scale 
 % parameter Sigma automatically.
 %
-% INPUT:
-% trainClass: An Nx1 vector denoting the class for each observation
-% bestLog2c: initial value for bestLog2c
-% bestLog2sig: initial value for bestLog2sig
+% X: a Outex struct
+% trainClass: An vector denoting the class for each observation
+% train: An vector denoting the indices of diagrams used for training
 % Ncv: A scalar representing Ncv-fold cross validation for parameter
-% selection. Note that this function does not require the user to specify
-% the run number for each iteration because it automatically assigns the run
-% number in the code "get_cv_ac.m".
+% selection. 
+% option: options for parameters selecting
+% opt: A struct that has the following fields:
+%       .src_dir            - Source directory where .diagram files reside
+%       .dst_dir            - Destination directory where kernel files reside
+%       .label              - e.g., real
+%       .dim                - Homology dimension
 
 % OUTPUT:
 % bestc: A scalar denoting the best value for C
 % bestsig: A scalar denoting the best value for sigma
 % bestcv: the best accuracy calculated from the training data set
+% kernel: a matrix denoting the kernel for the best model
 
 % #######################
 % Automatic Cross Validation 
 % Parameter selection using n-fold cross validation
 % #######################
 
-stepSize = 4;
-epsilon = 0.001;
-Nlimit = 50;
+if nargin > 5
+    stepSize = option.stepSize;
+    bestLog2c = log2(option.c);
+    bestLog2sig = log2(option.sigma);
+    epsilon = option.epsilon;
+    Nlimit = option.Nlimit;
+    svmCmd = option.svmCmd;
+else
+    stepSize = 5;
+    bestLog2c = 0;
+    bestLog2sig = 0;
+    epsilon = 0.005;
+    Nlimit = 100;
+    svmCmd = '';
+end
 
 % initial some auxiliary variables
 bestcv = 0;
@@ -47,29 +63,26 @@ while abs(deltacv) > epsilon && cnt < Nlimit
         for j = 1:numLog2sig
             log2sig = log2sig_list(j);
             sig = 2^log2sig;
-            % With some kernel
-            % cmd = ['-q -c ', num2str(2^log2c), ' -g ', num2str(2^log2sig),' -t 2'];
-            % cv = get_cv_ac(trainLabel, [(1:NTrain)' trainData*trainData'], cmd, Ncv);
             
             % With some precal kernel
             scale_str = ['scale_' num2str(sig, '%e')];
-            dim_str = ['dim_' num2str(options.dim)];
-            kernel_file = fullfile(options.dst_dir, ...
+            dim_str = ['dim_' num2str(opt.dim)];
+            kernel_file = fullfile(opt.dst_dir, ...
                 [...
-                options.label '_' ...           % e.g., clbp_s
+                opt.label '_' ...               % e.g., clbp_s
                 'K_inner_product' '_' ...       % IP kernel
                 scale_str '_' ...               % PSS time (sigma)
                 dim_str '.txt'                  % Hom.-dim.
                 ]);
             % Avoid unnecessary recomputation
             if (exist(kernel_file, 'file' ) ~= 2)
-                K = pl_Outex_compute_kernel(X, sig, options);
+                K = pl_Outex_compute_kernel(X, sig, opt);
             else
                 tmp = load(kernel_file);
                 K = pl_normalize_kernel(tmp);
             end
           
-            cmd = ['-q -c ', num2str(2^log2c), ' -t 4'];
+            cmd = ['-c ', num2str(2^log2c), ' -t 4', ' ', svmCmd];
             cv = get_cv_ac_kernel(trainClass, K(train,train), cmd, Ncv);
             if (cv >= bestcv),
                 bestcv = cv; bestLog2c = log2c; bestLog2sig = log2sig;

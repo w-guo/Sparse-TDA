@@ -1,9 +1,28 @@
-function pl_Outex_run_dipha(data_str, label, out_dir)
-% PL_OUTEX_RUN_DIPHA constructs cubical complexes from images with
-% CLBP operators computed at each pixel.
+function pl_Outex_run_dipha(struct, label, out_dir)
+% pl_Outex_run_dipha constructs cubical complexes from images with
+% the sign component of CLBP operators computed at each pixel.
 %
-%   LABEL is the prefix that is used for all output files and
-%   OUT_DIR is the directory where all output files will be written to
+%   pl_Outex_run_dipha(struct, label, out_dir) takes as
+%   input a struct that is a saved struct with the following fields:
+%
+%       .config
+%       .data   
+%
+%       .config - Struct with fields
+%
+%           .radius          - Scalar for computing CLBP
+%           .numNeighbor     - Scalar
+%           .downsample_rate - Scalar for downsampling each image
+%
+%       .data - N x 1 cell array where each entry is a struct with the
+%               following fields:
+%
+%           .clbp_s   - M x M matrix computed by the sign component of CLBP
+%           .clbp_m   - M x M matrix computed by the magnitude component of CLBP
+%           .file     - Source directory where each image resides
+%
+%   label is the prefix that is used for all output files and
+%   out_dir is the directory where all output files will be written to
 %   (will be created if it does not exist).
    
     % DIPHA binary
@@ -15,8 +34,8 @@ function pl_Outex_run_dipha(data_str, label, out_dir)
     %----------------------------------------------------------------------
     %                                   Create complexes + compute diagrams
     %----------------------------------------------------------------------
-    for i=1:length(data_str.data)
-        X = data_str.data{i};
+    for i=1:length(struct.data)
+        X = struct.data{i};
         
         if isempty(X)
             continue;

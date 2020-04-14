@@ -1,21 +1,21 @@
 function [bestc, bestsig, bestcv, kernel] = automaticParameterSelection(X, ...
-                HKStime, label, train, Ncv, option, opt)
-% This function assist you to obtain the cost parameter C  and kernel scale 
+                HKStime, trainClass, train, Ncv, option, opt)
+% This function assist you to obtain the cost parameter C and kernel scale 
 % parameter sigma automatically.
 %
 % INPUT:
-% X: 
-% HKStime: 
-% label: An Nx1 vector denoting the label for each observation
-% train: Indices of diagrams used for training
+% X: A SHREC struct 
+% HKStime: A scalar, HKStime = t means X.config.T1(t) is used to compute HKS
+% trainClass: An vector denoting the class for each observation
+% train: An vector denoting the indices of diagrams used for training
 % Ncv: A scalar representing Ncv-fold cross validation for parameter
 % selection. 
 % option: options for parameters selecting
-% opt: A struct that has the following fields:
+% opt: A struct with the following fields:
 %       .src_dir            - Source directory where .diagram files reside
 %       .dst_dir            - Destination directory where kernel files reside
 %       .label              - e.g., real
-%       .dim                - homology dimension
+%       .dim                - Homology dimension
 
 % OUTPUT:
 % bestc: A scalar denoting the best value for C
@@ -29,9 +29,8 @@ function [bestc, bestsig, bestcv, kernel] = automaticParameterSelection(X, ...
 % Automatic Cross Validation 
 % Parameter selection using n-fold cross validation
 % #######################
-[N, D] = size(trainData);
 
-if nargin>3
+if nargin > 6
     stepSize = option.stepSize;
     bestLog2c = log2(option.c);
     bestLog2sig = log2(option.sigma);
@@ -41,7 +40,7 @@ if nargin>3
 else
     stepSize = 5;
     bestLog2c = 0;
-    bestLog2sig = log2(1/D);
+    bestLog2sig = 0;
     epsilon = 0.005;
     Nlimit = 100;
     svmCmd = '';
@@ -71,24 +70,24 @@ while abs(deltacv) > epsilon && cnt < Nlimit
             
             % With some precal kernel
             scale_str = ['scale_' num2str(sig, '%e')];
-            dim_str = ['dim_' num2str(options.dim)];
-            kernel_file = fullfile(options.dst_dir, ...
+            dim_str = ['dim_' num2str(opt.dim)];
+            kernel_file = fullfile(opt.dst_dir, ...
                 [...
-                options.label '_' ...           % e.g., real
+                opt.label '_' ...               % e.g., real
                 'K_inner_product' '_' ...       % IP kernel
                 scale_str '_' ...               % PSS time (sigma)
                 dim_str '.txt'                  % Hom.-dim.
                 ]);
             % Avoid unnecessary recomputation
             if (exist(kernel_file, 'file' ) ~= 2)
-                K = pl_SHREC_compute_kernel(X, HKStime, sig, options);
+                K = pl_SHREC_compute_kernel(X, HKStime, sig, opt);
             else
                 tmp = load(kernel_file);
                 K = pl_normalize_kernel(tmp);
             end
           
-            cmd = ['-c ', num2str(2^log2c), ' -t 4', ' ',svmCmd];
-            cv = get_cv_ac_kernel(label(train), K(train,train), cmd, Ncv);
+            cmd = ['-c ', num2str(2^log2c), ' -t 4', ' ', svmCmd];
+            cv = get_cv_ac_kernel(trainClass, K(train,train), cmd, Ncv);
             if (cv >= bestcv),
                 bestcv = cv; bestLog2c = log2c; bestLog2sig = log2sig;
                 bestc = 2^bestLog2c; bestsig = 2^bestLog2sig; kernel = K;

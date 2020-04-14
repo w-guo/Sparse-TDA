@@ -30,7 +30,7 @@ test_ac_rep = zeros(1, rep);
 Ncv = 10; % 10-fold cross validation
 optionCV.stepSize = 4;
 optionCV.c = 2^8;        % initial C
-optionCV.gamma = 2^0;    % initial gamma
+optionCV.sigma = 2^0;    % initial sigma (PSS time)
 optionCV.epsilon = 0.001;
 optionCV.Nlimit = 50;
 optionCV.svmCmd = '-q';  % quiet mode
@@ -42,7 +42,7 @@ for k = 1:rep
     [train, trainClass] = ReadOutexTxt(trainTxt);
     [test, testClass] = ReadOutexTxt(testTxt);
 
-    % grid search for best C and gamma
+    % grid search for best C and sigma
     [bestc, bestsig, bestcv, kernel] = automaticParameterSelection_Outex_kernel(Outex_TC_00000,...
         trainClass, train, Ncv, optionCV, opt);
     

@@ -42,15 +42,17 @@ for k=1:rep
     tic
     train = randsample(1:total, total*0.7); % Indices of diagrams used for training
     test = setdiff(1:total,train);  % Indices of diagrams used for testing
+    trainClass = label(train);
+    testClass = label(test);
     
     % [bestc, bestsig, bestcv, kernel] = SHREC_automaticParameterSelection(SHREC_synthetic, ...
     %    2, label, train, 8, -2, 10, opt);
     [bestc, bestsig, bestcv, kernel] = automaticParameterSelection_SHREC_kernel(SHREC_real, ...
-        9, label, train, 6, -12, 10, opt);
+                                        HKStime, trainClass, train, Ncv, optionCV, opt);
     cmd =['-c ', num2str(bestc), ' -t 4'];
-    model = ovrtrain_kernel(label(train), kernel(train,train), cmd);
+    model = ovrtrain_kernel(trainClass, kernel(train,train), cmd);
     timerTrain(k) = toc;
-    [~, test_ac, ~] = ovrpredict_kernel(label(test), kernel(test,train), model);
+    [~, test_ac, ~] = ovrpredict_kernel(testClass, kernel(test,train), model);
     fprintf('Accuracy = %g%%\n', test_ac * 100);
     test_ac_rep(k) = test_ac;
     delete(fullfile(opt.dst_dir,'*.txt'));

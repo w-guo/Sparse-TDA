@@ -24,7 +24,7 @@ function [bestc, bestg, bestcv] = automaticParameterSelection(trainLabel, trainD
 % #######################
 [N, D] = size(trainData);
 
-if nargin>3
+if nargin > 3
     stepSize = option.stepSize;
     bestLog2c = log2(option.c);
     bestLog2g = log2(option.gamma);
@@ -63,6 +63,7 @@ while abs(deltacv) > epsilon && cnt < Nlimit
 %             % With some kernel
 %             cmd = ['-q -c ', num2str(2^log2c), ' -g ', num2str(2^log2g),' -t 2'];
 %             cv = get_cv_ac(trainLabel, [(1:NTrain)' trainData*trainData'], cmd, Ncv);
+
             % With some precal kernel
             cmd = ['-c ', num2str(2^log2c), ' -g ', num2str(2^log2g),' ',svmCmd];
             cv = get_cv_ac(trainLabel, trainData, cmd, Ncv);

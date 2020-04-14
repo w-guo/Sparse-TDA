@@ -1,18 +1,6 @@
 function K = pl_Outex_compute_kernel(X, sigma, options)
-%   X struct with the following fields:
-%
-%       .config
-%       .data
-%
-%       .config - Struct with fields
-%
-%           .alpha          - Scalar
-%           .T1             - Array of HKS times
-%           .target_scaling - Scaling of the mesh
-%
-%       .data - N x 1 cell array where each entry is a struct with the
-%               following fields:
-%
+%  Modified from https://github.com/rkwitt/persistence-learning/blob/master/code/matlab/experiments/pl_experiment_OASIS_run_mmd.m      
+
 %--------------------------------------------------------------------------
 %                                                                 Configure
 %--------------------------------------------------------------------------
