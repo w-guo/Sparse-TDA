@@ -71,7 +71,7 @@ For the full pipeline to work, we also need
 4. [(Scale-Invariant) Heat-Kernel Signature](http://vision.mas.ecp.fr/Personnel/iasonas/code/sihks.zip)
 5. [Completed Local Binary Pattern](http://www.comp.polyu.edu.hk/~cslzhang/code/CLBP.rar)
   
-where libsvm, PersistenceImages and iso2mesh were downloaded during the ```git submodule update``` into ```code/external```. Please follow the libsvm documentation on how to compile the MATLAB interface. Then download the last two packages and put them under ```code/external```. 
+where libsvm, PersistenceImages and iso2mesh should have been downloaded during the ```git submodule update``` into ```code/external```. Please follow the libsvm documentation on how to compile the MATLAB interface. Then download the last two packages and put them under ```code/external```. 
 
 ### Compiling dipha-pss (optional)
 
@@ -92,7 +92,7 @@ Create a ```data``` folder under this repository. The data sets used in our pape
 - [Download](http://www.cs.cf.ac.uk/shaperetrieval/download.php) SHREC14
 - [Download](http://www.outex.oulu.fi/db/classification/tmp/Outex_TC_00000.tar.gz) Outex_TC_00000
 
-Unpack the downloaded datasets to ```/data```. The essential results in our paper can be reproduced by the main scripts in the ```SHREC``` and ```Outex``` folders
+Unpack the downloaded datasets to ```/data```. The essential results from our paper can be reproduced by the main scripts in the ```SHREC``` and ```Outex``` folders
 - ```run_*_kernel.m```
 - ```run_*_sparse.m```
 - ```run_*_sparse_multiple_samples.m```
