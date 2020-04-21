@@ -1,46 +1,73 @@
 clear all; close all; clc
-% preprocess the raw data
-subjects = pl_SHREC_subjects('../../../../Data/SHREC14/Real/Data/SHREC14_real.txt');
-SHREC_real = pl_mesh2hks('../../../../Data/SHREC14/Real/Data', subjects, 1000);
-% subjects = pl_SHREC_subjects('../../../../Data/SHREC14/Synthetic/Data/SHREC14_synthetic.txt');
 
-% generate persistance diagrams for each subject at ti
-% pl_SHREC_run_dipha('SHREC_real_8.mat', 'SHREC_real', 'real', './real_8')
-pl_SHREC_run_dipha('./SHREC/SHREC_synthetic_5.mat', 'SHREC_synthetic', 'syn', './synthetic_5')
+subfolder = 'Synthetic';
+filename = 'SHREC_synthetic';
+% subfolder = 'Real';
+% filename = 'SHREC_real';
 
-%numClass= 15; pose = 20;
-numClass= 40; pose = 10;
-total = numClass*pose;
-label = reshape(repmat(1:numClass, pose, 1), total,1);
-
-SHREC_H1 = cell(1,total);
-%out_dir = './synthetic_5';
-out_dir = './real_8';
-for i =1:total
-    dipha_dst_file = fullfile(out_dir, sprintf('real_%d_009.diagram', i-1));
-    %dipha_dst_file = fullfile(out_dir, sprintf('syn_%d_007.diagram', i-1));
-    [dim,b,d] = load_persistence_diagram( dipha_dst_file );
-    data = [dim b d];
-    SHREC_H1{i} = data( dim==1, 2:3 );
+% save the preprocessed meshes as a mat file in the current directory to
+% avoid unnecessary recomputation during each run
+mat_file = fullfile([filename, '.mat']);
+if (exist(mat_file, 'file') ~= 2)
+    % preprocess the raw data
+    root = fullfile('../../../data/SHREC14/', subfolder, '/Data');
+    list_file = fullfile(root, [filename, '.txt']);
+    if (exist(list_file, 'file') ~= 2)
+        obj_files = dir(fullfile(root, '*.obj'));
+        fid = fopen(list_file, 'w');
+        fprintf(fid, '%s\n', obj_files.name);
+        fclose(fid);
+    end
+    subjects = write_SHREC_subjects(list_file);
+    SHREC = mesh2hks(root, subjects, 1000);
+    save(mat_file, 'SHREC', '-v7.3');
 end
 
-sig = 0.0001;
-%sig = 0.2;
+% options for persistence diagrams
+opt.src_dir = './synthetic';
+opt.label = 'synthetic';
+% opt.src_dir = './real';
+% opt.label = 'real'
+opt.dim = 1;
+
+% generate persistance diagrams for each subject at ti
+pl_SHREC_run_dipha(mat_file, 'SHREC', opt.label, opt.src_dir);
+
+numClass= 15; pose = 20; % synthetic
+% numClass= 40; pose = 10; % real
+total = numClass * pose;
+label = reshape(repmat(1:numClass, pose, 1), total, 1);
+
+% choose the best hks time scale for simulation
+HKStime = 7; % synthetic
+% HKStime = 9; % real
+
+% extract birth and death times from each persistance diagram
+SHREC_H1 = cell(1,total);
+for i = 1:total
+    dipha_dst_file = fullfile(opt.src_dir, [opt.label, '_', ...
+                    num2str(i-1, '%d'), '_', num2str(HKStime, '%.3d'), '.diagram']);
+    [dim,b,d] = load_persistence_diagram( dipha_dst_file );
+    data = [dim b d];
+    SHREC_H1{i} = data( dim==opt.dim, 2:3 );
+end
+
+sig = 0.2; % synthetic
+% sig = 0.0001; % real
 res = 30;
 rep = 30;
 increm = -80:40:80;
 s_num = length(increm);
 preTrain = zeros(1, rep);
 timerTrain = zeros(s_num, rep);
-timerTest = zeros(s_num, rep);
 test_ac_rep = zeros(s_num, rep);
 r_opt_rep = zeros(1, rep);
 energy_p_rep = zeros(s_num, rep);
 
 Ncv = 10; % 10-fold cross validation
 optionCV.stepSize = 4;
-optionCV.bestLog2c = 6;
-optionCV.bestLog2g = 2;
+optionCV.c = 2^6;       % initial C
+optionCV.gamma = 2^2;   % initial gamma
 optionCV.epsilon = 0.001;
 optionCV.Nlimit = 50;
 optionCV.svmCmd = '-q'; % quiet mode
@@ -48,10 +75,14 @@ optionCV.svmCmd = '-q'; % quiet mode
 rng(5)
 for k = 1:rep
     tic
-    train = randsample(1:total, total*0.7); % Indices of diagrams used for training
+    train = randsample(1:total, total * 0.7); % Indices of diagrams used for training
     test = setdiff(1:total,train);  % Indices of diagrams used for testing
-    %[H1_PIs] = make_PIs(SHREC_H1, res, sig);
-    [H1_PIs] = make_PIs(SHREC_H1, res, sig, @arctan, 1);
+    trainClass = label(train);
+    testClass = label(test);
+    
+    % generate persistence images
+    %[H1_PIs] = make_PIs(SHREC_H1, res, sig); % apply linear weight function
+    [H1_PIs] = make_PIs(SHREC_H1, res, sig, @arctan, 1); % apply nonlinear weight function
     vec_H1_PIs = vecs_from_PIs(H1_PIs);
     mat_H1_PIs = cat(1, vec_H1_PIs{:})';
     
@@ -64,16 +95,16 @@ for k = 1:rep
         energy_p_rep(i,k) = energy(S(i));  
         loc = optimalPlacements(U, r_opt, S(i));
         
-        [bestc, bestg, bestcv] = automaticParameterSelection_sparse(label(train), ...
-            mat_H1_PIs(loc, train)', Ncv, optionCV);
+        % grid search for best C and gamma
+        [bestc, bestg, bestcv] = automaticParameterSelection(trainClass, ...
+                                    mat_H1_PIs(loc, train)', Ncv, optionCV);
           
         cmd =['-c ', num2str(bestc), ' -g ', num2str(bestg)];
-        model = ovrtrain_sparse(label(train), mat_H1_PIs(loc, train)', cmd);
+        model = ovrtrain(trainClass, mat_H1_PIs(loc, train)', cmd);
         timerTrain(i,k) = toc;
-        [~, test_ac, ~] = ovrpredict_sparse(label(test), mat_H1_PIs(loc, test)', model);
+        [~, test_ac, ~] = ovrpredict(testClass, mat_H1_PIs(loc, test)', model);
         fprintf('Accuracy = %g%%\n', test_ac * 100);
         test_ac_rep(i,k) = test_ac;
-        timerTest(i,k) = toc;
     end
 end
 

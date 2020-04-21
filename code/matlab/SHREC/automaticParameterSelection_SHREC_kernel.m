@@ -1,4 +1,4 @@
-function [bestc, bestsig, bestcv, kernel] = automaticParameterSelection(X, ...
+function [bestc, bestsig, bestcv, kernel] = automaticParameterSelection_SHREC_kernel(X, ...
                 HKStime, trainClass, train, Ncv, option, opt)
 % This function assist you to obtain the cost parameter C and kernel scale 
 % parameter sigma automatically.
@@ -88,7 +88,7 @@ while abs(deltacv) > epsilon && cnt < Nlimit
           
             cmd = ['-c ', num2str(2^log2c), ' -t 4', ' ', svmCmd];
             cv = get_cv_ac_kernel(trainClass, K(train,train), cmd, Ncv);
-            if (cv >= bestcv),
+            if (cv >= bestcv)
                 bestcv = cv; bestLog2c = log2c; bestLog2sig = log2sig;
                 bestc = 2^bestLog2c; bestsig = 2^bestLog2sig; kernel = K;
             end

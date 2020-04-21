@@ -72,7 +72,7 @@ function pl_Outex_run_dipha(struct, label, out_dir)
         if (exist(diagram_file_name, 'file' ) ~= 2)
             system( exec );
         end
-        %delete(complex_file_name)
+        delete(complex_file_name)
         fprintf('DONE with %s\n', X.file);
     end
 end

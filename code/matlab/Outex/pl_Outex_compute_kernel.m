@@ -6,6 +6,8 @@ function K = pl_Outex_compute_kernel(X, sigma, options)
 %--------------------------------------------------------------------------
 root = fileparts(fileparts(fileparts(mfilename('fullpath'))));
 diagram_distance_binary = fullfile(root,'dipha-pss/build/diagram_distance');
+[status,~,~] = mkdir(options.dst_dir);
+assert(status == 1);
 
 %--------------------------------------------------------------------------
 %                                                          Build list files

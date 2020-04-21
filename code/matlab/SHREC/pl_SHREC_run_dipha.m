@@ -1,9 +1,9 @@
 function pl_SHREC_run_dipha(mat_file, what, label, out_dir)
-% pl_SHREC_run_dipha constructs simplicial complexes from meshes with
+% PL_SHREC_RUN_DIPHA constructs simplicial complexes from meshes with
 % Heat-Kernel signature computed at each vertex of the mesh.
 %
-%   pl_SHREC_run_dipha(mat_file, what, label, out_dir) takes as
-%   input a mat_file that is a saved struct with the following fields:
+%   PL_SHREC_RUN_DIPHA(MAT_FILE, WHAT, LABEL, OUT_DIR) takes as
+%   input a MAT_FILE that is a saved struct with the following fields:
 %
 %       .config
 %       .data   
@@ -24,12 +24,12 @@ function pl_SHREC_run_dipha(mat_file, what, label, out_dir)
 %           .TRIV  - K x 3 matrix of vertex indices of each mesh triangle 
 %           .f_hks - M x len(T1) matrix of HKS times for each vertex
 %      
-%   Typically, mat_file is the file that was saved when pre-processing the 
+%   Typically, MAT_FILE is the file that was saved when pre-processing the 
 %   SHREC data.
 %
-%   what is a string which identifies the field to be loaded from the
-%   mat_file. label is the prefix that is used for all output files and
-%   out_dir is the directory where all output files will be written to
+%   WHAT is a string which identifies the field to be loaded from the
+%   MAT_FILE. LABEL is the prefix that is used for all output files and
+%   OUT_DIR is the directory where all output files will be written to
 %   (will be created if it does not exist).
 %
 % Author(s): Roland Kwitt
@@ -92,7 +92,7 @@ function pl_SHREC_run_dipha(mat_file, what, label, out_dir)
             if (exist(diagram_file_name, 'file' ) ~= 2)
                 system( exec );
             end
-            %delete(complex_file_name)
+            delete(complex_file_name)
         end
         fprintf('DONE with %s\n', X.file);
     end

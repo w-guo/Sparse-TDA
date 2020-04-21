@@ -12,22 +12,24 @@ options.numNeighbor = 8;
 options.mappingtype = 'ri';
 options.downsample_rate = 4;
 
+% compute CLBP for each image
+Outex = image2clbp(root, total, options);
+
+% options for persistence diagrams
 opt.src_dir = './clbp_s';
 opt.label = 'clbp_s';
 opt.dim = 0; % 0-dimensional PD
 
-% compute CLBP for each image
-Outex_TC_00000 = image2clbp(root, total, options);
 % generate persistance diagrams for each image
-pl_Outex_run_dipha(Outex_TC_00000, opt.label, opt.src_dir)
+pl_Outex_run_dipha(Outex, opt.label, opt.src_dir)
 
-% extract birth and death times for PD
+% extract birth and death times from each persistance diagram
 Outex_H0 = cell(1,total);
 for i = 1:total
     dipha_dst_file = fullfile(opt.src_dir, sprintf('clbp_s_%06d.diagram', i-1));
     [dim,b,d] = load_persistence_diagram(dipha_dst_file);
     data = [dim b d];
-    Outex_H0{i} = data(dim==0, 2:3);
+    Outex_H0{i} = data(dim==opt.dim, 2:3);
 end
 
 sig = 0.02;
@@ -64,7 +66,7 @@ for k = 1:rep
 
     % grid search for best C and gamma
     [bestc, bestg, bestcv] = automaticParameterSelection(trainClass, ...
-        mat_H0_PIs(samples, train)', Ncv, optionCV);
+                                mat_H0_PIs(samples, train)', Ncv, optionCV);
     
     cmd =['-c ', num2str(bestc), ' -g ', num2str(bestg)];
     model = ovrtrain(trainClass, mat_H0_PIs(samples, train)', cmd); 
