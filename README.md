@@ -3,7 +3,7 @@
 This code implements the Sparse-TDA method that integrates QR pivoting-based sparse sampling algorithm into persistence images to transform topological features into image pixels and identify discriminative pixel samples in the presence of noisy and redundant information. 
 
 <p align="center">
-    <img src="https://github.com/w-guo/Sparse-TDA/blob/master/Sparse_TDA_pipeline.png" width="840"> <br />
+    <img src="http://wguo.rbind.io/publication/sparse-tda/Sparse_TDA_pipeline.png" width="840"> <br />
     <em> Pipeline of Sparse-TDA method for multi-way classification</em>
 </p>
 
