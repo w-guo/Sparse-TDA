@@ -34,7 +34,7 @@ function pl_Outex_run_dipha(struct, label, out_dir)
     %----------------------------------------------------------------------
     %                                   Create complexes + compute diagrams
     %----------------------------------------------------------------------
-    for i=1:length(struct.data)
+    for i = 1:length(struct.data)
         X = struct.data{i};
         
         if isempty(X)
@@ -44,7 +44,7 @@ function pl_Outex_run_dipha(struct, label, out_dir)
         pixel_values = X.clbp_s;
         [~,base_file_name,~] = fileparts(X.file);
         
-        % Write simplicial complexes
+        % Write cubical complexes
         complex_file_name = fullfile(out_dir, ...
             [label '_' ...
             base_file_name ...

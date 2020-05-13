@@ -48,7 +48,7 @@ for k = 1:rep
     [bestc, bestsig, bestcv, kernel] = automaticParameterSelection_Outex_kernel(Outex,...
                                         trainClass, train, Ncv, optionCV, opt);
     
-    cmd =['-c ', num2str(bestc), ' -t 4'];
+    cmd = ['-c ', num2str(bestc), ' -t 4'];
     model = ovrtrain_kernel(trainClass, kernel(train,train), cmd);
     timerTrain(k) = toc;
     [~, test_ac, ~] = ovrpredict_kernel(testClass, kernel(test,train), model);

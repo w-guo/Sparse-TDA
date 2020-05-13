@@ -79,7 +79,7 @@ for k = 1:rep
         [bestc, bestg, bestcv] = automaticParameterSelection_sparse(trainClass, ...
                                     mat_H0_PIs(loc, train)', Ncv, optionCV);
         
-        cmd =['-c ', num2str(bestc), ' -g ', num2str(bestg)];
+        cmd = ['-c ', num2str(bestc), ' -g ', num2str(bestg)];
         model = ovrtrain(trainClass, mat_H0_PIs(loc, train)', cmd);
         timerTrain(i, k) = toc;
         [~, test_ac, ~] = ovrpredict(testClass, mat_H0_PIs(loc, test)', model);

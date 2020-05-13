@@ -19,7 +19,7 @@ if (exist(mat_file, 'file') ~= 2)
         fclose(fid);
     end
     subjects = write_SHREC_subjects(list_file);
-    SHREC = mesh2hks(root, subjects, 1000);
+    SHREC = mesh2hks(root, subjects);
     save(mat_file, 'SHREC', '-v7.3');
 end
 
@@ -99,7 +99,7 @@ for k = 1:rep
         [bestc, bestg, bestcv] = automaticParameterSelection(trainClass, ...
                                     mat_H1_PIs(loc, train)', Ncv, optionCV);
           
-        cmd =['-c ', num2str(bestc), ' -g ', num2str(bestg)];
+        cmd = ['-c ', num2str(bestc), ' -g ', num2str(bestg)];
         model = ovrtrain(trainClass, mat_H1_PIs(loc, train)', cmd);
         timerTrain(i,k) = toc;
         [~, test_ac, ~] = ovrpredict(testClass, mat_H1_PIs(loc, test)', model);

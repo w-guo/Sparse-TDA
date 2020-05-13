@@ -19,7 +19,7 @@ lst_file = fullfile(options.dst_dir, [options.label '_lst.txt']);
 lst_fid = fopen(lst_file, 'w');
 assert(lst_fid > 0);
 
-for i=1:length(X.data)
+for i = 1:length(X.data)
     [~,base_file_name,~] = fileparts(X.data{i}.file);
     diagram_file_name = fullfile(options.src_dir, ...
         [...

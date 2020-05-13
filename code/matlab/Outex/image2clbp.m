@@ -10,7 +10,7 @@ function result = image2clbp(base_dir, picNum, options)
     subject_data = cell(picNum,1);
 
     % Iterate over all subjects
-    for i=1:picNum
+    for i = 1:picNum
         file_name = sprintf('%s/images/%06d.ras', base_dir, i-1);
         Gray = imread(file_name);
         [m,n] = size(Gray);

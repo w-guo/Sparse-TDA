@@ -19,7 +19,7 @@ if (exist(mat_file, 'file') ~= 2)
         fclose(fid);
     end
     subjects = write_SHREC_subjects(list_file);
-    SHREC = mesh2hks(root, subjects, 1000);
+    SHREC = mesh2hks(root, subjects);
     save(mat_file, 'SHREC', '-v7.3');
 end
 

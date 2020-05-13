@@ -47,7 +47,7 @@ function pl_SHREC_run_dipha(mat_file, what, label, out_dir)
     %----------------------------------------------------------------------
     %                                   Create complexes + compute diagrams
     %----------------------------------------------------------------------
-    for i=1:length(Y.data)
+    for i = 1:length(Y.data)
         X = Y.data{i};
         num_times = length(Y.config.T1);
         
@@ -56,7 +56,7 @@ function pl_SHREC_run_dipha(mat_file, what, label, out_dir)
         end
        
         % Iterate over HKS times
-        for t=1:num_times
+        for t = 1:num_times
             triangles = X.TRIV;
             vertex_values = X.f_hks(:,t);
             [~,base_file_name,~] = fileparts(X.file);

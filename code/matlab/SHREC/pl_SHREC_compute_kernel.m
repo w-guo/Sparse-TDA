@@ -25,7 +25,7 @@ lst_file = fullfile(options.dst_dir, ...
 lst_fid = fopen(lst_file, 'w');
 assert(lst_fid > 0);
 
-for i=1:length(X.data)
+for i = 1:length(X.data)
     [~,base_file_name,~] = fileparts(X.data{i}.file);
     diagram_file_name = fullfile(options.src_dir, ...
         [...
@@ -52,7 +52,7 @@ scale_str = ['scale_' num2str(sigma, '%e')];
 dim_str = ['dim_' num2str(options.dim)];
 kernel_file = fullfile(options.dst_dir, ...
     [...
-    options.label '_' ...                   % e.g., cc
+    options.label '_' ...           % e.g., synthetic
     'K_inner_product' '_' ...       % IP kernel
     scale_str '_' ...               % PSS time (sigma)
     dim_str '.txt'                  % Hom.-dim.
