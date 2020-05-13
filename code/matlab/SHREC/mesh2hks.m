@@ -1,19 +1,19 @@
-function result = mesh2hks(base_dir, subjects, target_scaling, varargin)
+function result = mesh2hks(base_dir, subjects, varargin)
 % mesh2hks computes heat-kernel signatures (HKS) for 3D meshes of 
 % available in OBJ format.
-%
-% Author(s): Roland Kwitt, 2015
+
+% Modified from https://github.com/rkwitt/persistence-learning/blob/master/code/matlab/utilities/pl_mesh2hks.m (mesh normalization is removed as height matters for human subject classfication)
 
     % Additional arguments
-    if nargin == 3
+    if nargin == 2
        alpha = 2;
        T1 = -11:-2;
        verbose = 1;
-    elseif nargin == 4
+    elseif nargin == 3
        alpha = varargin{1};
        T1 = -11:-2;
        verbose = 1;
-    elseif nargin == 5
+    elseif nargin == 4
         alpha =  varargin{1};
         T1 = varargin{2};
         verbose = 1;
@@ -23,7 +23,7 @@ function result = mesh2hks(base_dir, subjects, target_scaling, varargin)
     subject_data = cell(length(subjects),1);
 
     % Iterate over all subjects
-    for subject_id=1:length(subjects)
+    for subject_id = 1:length(subjects)
         file_name = subjects{subject_id};
         
         % Sanity check:
@@ -39,19 +39,13 @@ function result = mesh2hks(base_dir, subjects, target_scaling, varargin)
         % Possibly repair mesh
         [vertices, faces] = objread(fullfile(base_dir, file_name));
         [vertices_fixed, faces_fixed] = ...
-            meshcheckrepair(vertices, faces);
+            meshcheckrepair(vertices, faces);  
 
-        % Normalize meshes
-        V = vertices_fixed;
-        V = V - repmat(mean(V),size(V,1),1);
-        V = V/norm(V);
-        V = target_scaling*V; % scale the mesh to avoid numerical instabilities
-
-        % Save (scaled) mesh data
-        subject_data{subject_id}.V = V';
-        subject_data{subject_id}.X = V(:,1)';
-        subject_data{subject_id}.Y = V(:,2)';
-        subject_data{subject_id}.Z = V(:,3)';
+        % Save mesh data
+        subject_data{subject_id}.V = vertices_fixed';
+        subject_data{subject_id}.X = vertices_fixed(:,1)';
+        subject_data{subject_id}.Y = vertices_fixed(:,2)';
+        subject_data{subject_id}.Z = vertices_fixed(:,3)';
         subject_data{subject_id}.TRIV = faces_fixed;
         subject_data{subject_id}.file = fullfile(base_dir, file_name);
 
@@ -66,7 +60,7 @@ function result = mesh2hks(base_dir, subjects, target_scaling, varargin)
     result.data = subject_data;
 end
 
-function f_hks = compute_hks(data,alpha,T1)
+function f_hks = compute_hks(data, alpha, T1)
     opt.dtype = 'cotangent';
     [W,A] = mshlp_matrix(data, opt);
     A = spdiags(A, 0, size(A,1), size(A,1));
