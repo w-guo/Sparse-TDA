@@ -12,7 +12,6 @@ function pl_SHREC_run_dipha(mat_file, what, label, out_dir)
 %
 %           .alpha          - Scalar
 %           .T1             - Array of HKS times
-%           .target_scaling - Scaling of the mesh
 %
 %       .data - N x 1 cell array where each entry is a struct with the
 %               following fields:
